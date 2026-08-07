@@ -10,7 +10,7 @@ const LINKS = [
   { label: "Compliance", href: "/compliance" },
   { label: "Pricing", href: "/pricing" },
   { label: "AI Assistant", href: "#ai-assistant" },
-  { label: "FAQ", href: "#faq" },
+  { label: "FAQ", href: "/faq" },
 ];
 
 export default function Navbar() {
