@@ -6,7 +6,7 @@ import { ShieldCheck } from "lucide-react";
 
 const LINKS = [
   { label: "Services", href: "/services" },
-  { label: "Features", href: "#features" },
+  { label: "Features", href: "/features" },
   { label: "Compliance", href: "/compliance" },
   { label: "Pricing", href: "#pricing" },
   { label: "AI Assistant", href: "#ai-assistant" },
