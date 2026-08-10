@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 
 export default function Footer() {
   return (
@@ -10,6 +11,7 @@ export default function Footer() {
           
           {/* Copyright Text */}
           <div className="text-slate-300 tracking-wide text-center sm:text-left">
+            <Image src="/fleet sense logo.svg" alt="FleetSense Logo" width={20} height={20} className="inline-block mr-2 mb-1" /> 
             2026 FleetSense. All Rights Reserved.
           </div>
 

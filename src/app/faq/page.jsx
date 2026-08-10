@@ -48,7 +48,7 @@ export default function FAQPage() {
 
   return (
     <div className="min-h-screen bg-[#61938b] text-[#0f231f]">
-      <Navbar />
+      <Navbar alwaysSolid={true} />
 
       <main className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         {/* Back Link */}

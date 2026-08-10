@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import Navbar from "@/components/landing/navbar";
 import Footer from "@/components/landing/footer";
+import Image from "next/image";
 import { ShieldCheck, ArrowLeft, Eye, EyeOff, Lock, Mail } from "lucide-react";
 
 export default function LoginPage() {
@@ -22,7 +23,7 @@ export default function LoginPage() {
 
   return (
     <div className="min-h-screen bg-[#61938b] text-[#0f231f] flex flex-col justify-between">
-      <Navbar />
+      <Navbar alwaysSolid={true} />
 
       <main className="flex-1 flex items-center justify-center px-4 sm:px-6 lg:px-8 py-12">
         <div className="w-full max-w-md">
@@ -36,12 +37,13 @@ export default function LoginPage() {
           </Link>
 
           {/* Form Container */}
-          <div className="bg-[#f4f7f5] rounded-3xl p-8 sm:p-10 shadow-2xl border border-white/80">
+          <div className="bg-[#e1e7e3] rounded-3xl p-8 sm:p-10 shadow-2xl border border-white/80">
             
             {/* Header */}
             <div className="text-center mb-8">
-              <div className="inline-flex p-3 bg-[#203330] rounded-2xl text-emerald-300 mb-4 shadow-md">
-                <ShieldCheck className="w-8 h-8" />
+              <div className="inline-flex p-3 mb-4 ">
+                {/* <ShieldCheck className="w-8 h-8" /> */}
+                <Image src="/fleet sense logo.svg" alt="FleetSense Logo" width={65} height={55} className="ml-2" />
               </div>
               <h1 className="text-3xl font-extrabold text-[#091714] tracking-tight">
                 Welcome Back

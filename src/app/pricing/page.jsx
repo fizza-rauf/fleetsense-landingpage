@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import Navbar from "@/components/landing/navbar";
 import Footer from "@/components/landing/footer";
 import { ArrowLeft, Check, ShieldCheck } from "lucide-react";
@@ -61,7 +62,7 @@ export default function PricingPage() {
 
   return (
     <div className="min-h-screen bg-[#61938b] text-[#0f231f]">
-      <Navbar />
+      <Navbar alwaysSolid={true} />
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         {/* Back Link */}
@@ -127,6 +128,7 @@ export default function PricingPage() {
               )}
 
               <div>
+                {/* <Image src="/fleet sense logo.svg" alt="FleetSense Logo" width={30} height={30} className="mb-6" /> */}
                 <h2 className="text-2xl font-bold text-[#091714] mb-2">{plan.name}</h2>
                 <p className="text-xs font-medium text-[#1c332e] mb-6 min-h-[36px]">
                   {plan.description}
