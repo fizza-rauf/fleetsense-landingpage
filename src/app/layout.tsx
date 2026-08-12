@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Chatbot from "@/components/landing/chatbot";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 
@@ -13,20 +14,29 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Fleet Sense",
-  description: "AI forward Fleet Compliance and Management System",
-  icons: {
+title: "FleetSense - Fleet Compliance & Management Platform",
+description:
+    "Streamline commercial transport compliance, digital walkaround checks, and defect tracking",
+icons: {
     icon: "/fleet sense logo.svg",
-  }
+}
 };
 
-export default function RootLayout({ children }: LayoutProps<"/">) {
+export default function RootLayout({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
   return (
     <html
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="min-h-full flex flex-col">
+        {children}
+        {/* Floating AI Assistant Widget */}
+        <Chatbot />
+      </body>
     </html>
   );
 }
