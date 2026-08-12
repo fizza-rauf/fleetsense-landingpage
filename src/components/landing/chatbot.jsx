@@ -5,6 +5,8 @@ import { MessageSquare, X, Send, Bot, User, Loader2 } from "lucide-react";
 
 export default function Chatbot() {
   const [isOpen, setIsOpen] = useState(false);
+  const baseUrl = process.env.URL_CHATBOT || "http://127.0.0.1:8000";
+  const [isOnline, setIsOnline] = useState(true);
   const [messages, setMessages] = useState([
     {
       sender: "bot",
@@ -24,6 +26,22 @@ export default function Chatbot() {
     scrollToBottom();
   }, [messages, isLoading]);
 
+  // Check backend server status when chat opens
+  useEffect(() => {
+    if (!isOpen || !baseUrl) return;
+
+    const checkServerStatus = async () => {
+      try {
+        const response = await fetch(`${baseUrl}/api/chat`, { method: "OPTIONS" });
+        setIsOnline(response.ok || response.status < 500);
+      } catch (error) {
+        setIsOnline(false);
+      }
+    };
+
+    checkServerStatus();
+  }, [isOpen, baseUrl]);
+
   const handleSendMessage = async (e) => {
     e.preventDefault();
     if (!input.trim() || isLoading) return;
@@ -35,7 +53,7 @@ export default function Chatbot() {
 
     try {
       // FastAPI Backend Endpoint (matches main.py: @app.post("/api/chat"))
-      const response = await fetch("http://127.0.0.1:8000/api/chat", {
+      const response = await fetch(`${baseUrl}/api/chat`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -44,9 +62,11 @@ export default function Chatbot() {
       });
 
       if (!response.ok) {
+        setIsOnline(false);
         throw new Error("Failed to connect to AI backend");
       }
 
+      setIsOnline(true);
       const data = await response.json();
       setMessages((prev) => [
         ...prev,
@@ -54,11 +74,13 @@ export default function Chatbot() {
       ]);
     } catch (error) {
       console.error("Chat error:", error);
+      setIsOnline(false);
       setMessages((prev) => [
         ...prev,
         {
           sender: "bot",
-          text: "Sorry, I'm having trouble connecting to the backend right now. Please ensure your FastAPI server is running.",
+          text: "Sorry, I'm having trouble connecting to the server right now.",
+          consoleLog: `Failed to connect to FastAPI backend server. Please ensure the server is running and accessible at ${baseUrl}`,
         },
       ]);
     } finally {
@@ -72,26 +94,33 @@ export default function Chatbot() {
       {!isOpen && (
         <button
           onClick={() => setIsOpen(true)}
-          className="flex items-center gap-2 bg-[#203330] hover:bg-[#122220] text-white px-5 py-3.5 rounded-full shadow-2xl transition-all duration-300 hover:scale-105 border border-emerald-400/30"
+          className="flex items-center gap-2 bg-[#203330] hover:bg-[#122220] text-white px-5 py-3.5 rounded-full shadow-2xl transition-all duration-300 hover:scale-105 border border-emerald-200/30 animate-glow-15s text-amber-200"
         >
           <Bot className="w-6 h-6 text-emerald-300" />
-          <span className="font-bold text-sm tracking-wide">AI Assistant</span>
+          <span className="font-bold text-sm tracking-wide">FleetBot</span>
         </button>
       )}
 
       {/* Chatbox Window */}
       {isOpen && (
-        <div className="w-[360px] sm:w-[400px] h-[520px] bg-[#f4f7f5] rounded-3xl shadow-2xl border border-white/80 flex flex-col overflow-hidden animate-in fade-in slide-in-from-bottom-5 duration-200">
+        <div className="w-[360px] sm:w-[400px] h-[520px] bg-[#f4f7f5] rounded-3xl shadow-2xl border border-slate-50 flex flex-col overflow-hidden animate-in fade-in slide-in-from-bottom-5 duration-200">
           
           {/* Chat Header */}
-          <div className="bg-[#203330] p-4 text-white flex items-center justify-between border-b border-white/10">
+          <div className="bg-slate-950 p-4 text-white flex items-center justify-between border-b border-white/10">
             <div className="flex items-center gap-3">
               <div className="w-9 h-9 rounded-xl bg-[#61938b] flex items-center justify-center text-white shadow-md">
                 <Bot className="w-5 h-5" />
               </div>
               <div>
-                <h3 className="font-bold text-sm text-white">FleetSense AI Assistant</h3>
-                <p className="text-[10px] text-emerald-200 font-medium">Online • Powered by OpenRouter</p>
+                <p className="text-white font-bold text-xs sm:text-sm">FleetSense AI Assistant</p>
+                <div className="flex items-center gap-1">
+                  <p className={`text-[10px] font-medium ${isOnline ? "text-emerald-200" : "text-rose-300"}`}>
+                    {isOnline ? "Online" : "Offline"}
+                  </p>
+                  <p className={`text-[13px] font-medium pb-1.5 ${isOnline ? "text-green-500" : "text-red-500"}`}>
+                    •
+                  </p>
+                </div>
               </div>
             </div>
             <button
@@ -114,7 +143,7 @@ export default function Chatbot() {
                 <div
                   className={`w-7 h-7 rounded-lg flex items-center justify-center text-xs font-bold shrink-0 ${
                     msg.sender === "user"
-                      ? "bg-[#61938b] text-white"
+                      ? "bg-[#6baaa0] text-white"
                       : "bg-[#203330] text-emerald-300"
                   }`}
                 >
