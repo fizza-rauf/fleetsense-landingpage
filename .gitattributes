@@ -1,0 +1,6 @@
+# Handle line endings automatically for text files
+* text=auto
+
+# Explicitly set defaults for specific file extensions if needed
+*.js text eol=lf
+*.py text eol=lf

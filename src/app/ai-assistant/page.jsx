@@ -11,6 +11,7 @@ export default function AIAssistantPage() {
       text: "Hello! I am your FleetSense AI Assistant. How can I help you with walkaround checks, DVSA compliance, or vehicle defects today?",
     },
   ]);
+  const botUrl = process.env.URL_CHATBOT || "http://127.0.0.1:8000";
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const messagesEndRef = useRef(null);
@@ -34,7 +35,7 @@ export default function AIAssistantPage() {
     setIsLoading(true);
 
     try {
-      const response = await fetch("http://127.0.0.1:8000/api/chat", {
+      const response = await fetch(`${botUrl}/api/chat`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -45,7 +46,7 @@ export default function AIAssistantPage() {
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.detail || "Failed response from backend");
+        throw new Error(data.detail || "Failed response from ChatBot");
       }
 
       setMessages((prev) => [
@@ -58,7 +59,7 @@ export default function AIAssistantPage() {
         ...prev,
         {
           sender: "bot",
-          text: "⚠️ Connection Error: Please ensure your FastAPI backend server is running on http://127.0.0.1:8000.",
+          text: "Connection Error: ChatBot failed to respond at the moment.",
         },
       ]);
     } finally {
@@ -67,10 +68,10 @@ export default function AIAssistantPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#61938b] text-[#0f231f] flex flex-col justify-between p-4 sm:p-8">
-      <main className="max-w-4xl mx-auto w-full flex-1 flex flex-col">
+    <div className="h-screen overflow-hidden bg-[#61938b] text-[#0f231f] flex flex-col p-4 sm:p-8">
+      <main className="max-w-4xl mx-auto w-full flex-1 flex flex-col overflow-hidden">
         {/* Top Back Navigation */}
-        <div className="mb-6">
+        <div className="mb-4 shrink-0">
           <Link
             href="/"
             className="inline-flex items-center gap-2 text-sm font-semibold text-white hover:underline bg-white/10 px-4 py-2 rounded-xl backdrop-blur-sm border border-white/20 transition-all"
@@ -80,19 +81,19 @@ export default function AIAssistantPage() {
         </div>
 
         {/* Header Section */}
-        <div className="text-center mb-6">
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/20 text-white text-xs font-semibold backdrop-blur-md border border-white/30 uppercase tracking-wider mb-3">
+        <div className="text-center mb-4 shrink-0">
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/20 text-white text-xs font-semibold backdrop-blur-md border border-white/30 uppercase tracking-wider mb-2">
             <Sparkles className="w-4 h-4 text-emerald-100" /> AI Fleet Assistant
           </div>
-          <h1 className="text-3xl sm:text-4xl font-extrabold text-[#091714]">
+          <h1 className="text-2xl sm:text-3xl font-extrabold text-[#091714]">
             FleetSense Support Copilot
           </h1>
         </div>
 
         {/* Chat Window Container */}
-        <div className="flex-1 bg-[#f4f7f5] rounded-3xl border border-white/80 shadow-2xl flex flex-col overflow-hidden min-h-[500px]">
-          {/* Messages Area */}
-          <div className="flex-1 p-6 overflow-y-auto space-y-4 bg-[#e8eee9]/40">
+        <div className="flex-1 min-h-0 bg-[#f4f7f5] rounded-3xl border border-white/80 shadow-2xl flex flex-col overflow-hidden">
+          {/* Messages Area - Smooth Scrollable Container */}
+          <div className="flex-1 p-6 overflow-y-auto scroll-smooth space-y-4 bg-[#e8eee9]/40">
             {messages.map((msg, idx) => (
               <div
                 key={idx}
@@ -139,7 +140,7 @@ export default function AIAssistantPage() {
           {/* Form Input Bar */}
           <form
             onSubmit={handleSendMessage}
-            className="p-4 bg-white border-t border-[#8baaa1]/30 flex items-center gap-3"
+            className="p-4 bg-white border-t border-[#8baaa1]/30 flex items-center gap-3 shrink-0"
           >
             <input
               type="text"
@@ -151,7 +152,7 @@ export default function AIAssistantPage() {
             <button
               type="submit"
               disabled={isLoading || !input.trim()}
-              className="px-6 py-3.5 bg-[#203330] hover:bg-[#122220] disabled:opacity-50 text-white font-bold rounded-xl transition-all shadow-md flex items-center gap-2 text-sm"
+              className="px-6 py-3.5 bg-[#203330] hover:bg-[#122220] disabled:opacity-50 text-white font-bold rounded-xl transition-all shadow-md flex items-center gap-2 text-sm shrink-0"
             >
               <span>Send</span>
               <Send className="w-4 h-4" />

@@ -130,7 +130,7 @@ export default function PricingPage() {
               <div>
                 {/* <Image src="/fleet sense logo.svg" alt="FleetSense Logo" width={30} height={30} className="mb-6" /> */}
                 <h2 className="text-2xl font-bold text-[#091714] mb-2">{plan.name}</h2>
-                <p className="text-xs font-medium text-[#1c332e] mb-6 min-h-[36px]">
+                <p className="text-xs font-medium text-[#1c332e] mb-6 min-h-9">
                   {plan.description}
                 </p>
 
