@@ -41,7 +41,11 @@ export default function Navbar({alwaysSolid = false}) {
           <div className="p-2 rounded-lg text-white">
             {/* <ShieldCheck className="h-5 w-5 text-emerald-300" /> */}
            <div className="flex">
-              <Image src="/Group 180.svg" alt="FleetSense Logo" width={80} height={85} />
+              <Image 
+              src="/Group 180.svg" 
+              alt="FleetSense Logo" 
+              width={"80"} 
+              height={"85"} />
               <sup className="text-[10px] ml-0.5 pt-9">&trade;</sup>
            </div>
           </div>
